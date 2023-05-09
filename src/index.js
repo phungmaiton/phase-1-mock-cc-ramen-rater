@@ -12,12 +12,16 @@ const detailRestaurant = document.querySelector('#detail-restaurant');
 
 fetch ('http://localhost:3000/ramens')
     .then(resp => resp.json())
-    .then(ramenObject => ramenObject.forEach(ramen => renderRamen(ramen)))
+    .then(ramenObject => {
+        ramenObject.forEach(ramen => renderRamen(ramen));
+        defaultRamen(ramenObject);
+    })
 
 const renderRamen = (ramen) => {
     const ramenImage = document.createElement('img');
     ramenImage.src = ramen.image;
     ramenMenu.appendChild(ramenImage);
+
 
     ramenImage.addEventListener('click', () => {
         ratingDisplay.innerHTML = ramen.rating;
@@ -65,3 +69,38 @@ ramenForm.addEventListener('submit', (e) => {
     .then(ramen => renderRamen(ramen))
 
   })
+
+//Default
+
+function defaultRamen(ramenObject) {
+    const defaultRamen = ramenObject[0];
+    ratingDisplay.innerHTML = defaultRamen.rating;
+    commentDisplay.innerHTML = defaultRamen.comment;
+    detailImage.src = defaultRamen.image;
+    detailName.innerHTML = defaultRamen.name;
+    detailRestaurant.innerHTML = defaultRamen.restaurant;
+}
+
+//Update Rating
+
+const updateForm = document.querySelector('#edit-ramen');
+
+updateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newRating = document.querySelector('#new-rating');
+    const newComment = document.querySelector('#new-comment');
+    
+    fetch(`http://localhost:3000/ramens/${ramen.id}`,{
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "rating": parseInt(newRating.value),
+            "comment": newComment.value
+        })
+    })
+        .then(resp => resp.json())
+        .then(ramen => renderRamen(ramen))
+})
