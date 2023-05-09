@@ -1,36 +1,68 @@
 {
-  "name": "phase-1-mock-cc-ramen-rater",
-  "version": "1.0.0",
-  "description": "practice fetch requests, using an API, responding to user events, updating the dom",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "mocha --timeout 5000"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/learn-co-curriculum/phase-1-mock-cc-ramen-rater.git"
-  },
-  "keywords": [
-    "flatiron school",
-    "javascript",
-    "dom",
-    "fetch",
-    "api",
-    "user events"
-  ],
-  "author": "Flatiron School",
-  "license": "CC-BY-NC-SA-4.0",
-  "bugs": {
-    "url": "https://github.com/learn-co-curriculum/phase-1-mock-cc-ramen-rater/issues"
-  },
-  "homepage": "https://github.com/learn-co-curriculum/phase-1-mock-cc-ramen-rater#readme",
-  "dependencies": {
-    "chai": "^4.2.0",
-    "jsdom": "^9.0",
-    "mocha": "5.2.0",
-    "mocha-jsdom": "~1.1.0"
-  }
+  "ramens": [
+    {
+      "id": 1,
+      "name": "Shoyu Ramen",
+      "restaurant": "Nonono",
+      "image": "./assets/ramen/shoyu.jpg",
+      "rating": 7,
+      "comment": "Delish. Can't go wrong with a classic!"
+    },
+    {
+      "id": 2,
+      "name": "Naruto Ramen",
+      "restaurant": "Naruto",
+      "image": "./assets/ramen/naruto.jpg",
+      "rating": 10,
+      "comment": "My absolute fave!"
+    },
+    {
+      "id": 3,
+      "name": "Nirvana Shiromaru",
+      "restaurant": "Ippudo",
+      "image": "./assets/ramen/nirvana.jpg",
+      "rating": "7",
+      "comment": "Do buy the hype."
+    },
+    {
+      "id": 4,
+      "name": "Gyukotsu Ramen",
+      "restaurant": "Za-Ya Ramen",
+      "image": "./assets/ramen/gyukotsu.jpg",
+      "rating": 8,
+      "comment": "Good to the last drop."
+    },
+    {
+      "id": 5,
+      "name": "Kojiro Red Ramen",
+      "restaurant": "Ramen-Ya",
+      "image": "./assets/ramen/kojiro.jpg",
+      "rating": 6,
+      "comment": "Perfect for a cold night."
+    },
+    {
+      "name": "Spicy Creamy Vegan",
+      "restaurant": "Jinya",
+      "image": "https://images.happycow.net/venues/1024/85/67/hcmp85671_434001.jpeg",
+      "rating": 9,
+      "comment": "Best vegan ramen!",
+      "id": 6
+    },
+    {
+      "name": "Black Tonkotsu Ramen",
+      "restaurant": "Jinya",
+      "image": "https://i0.wp.com/cvindependent.com/wp-content/uploads/2021/08/Torakichi.jpeg",
+      "rating": 7,
+      "comment": "Pretty good",
+      "id": 7
+    },
+    {
+      "name": "Dan Dan Ramen",
+      "restaurant": "Not sure",
+      "image": "https://thewoksoflife.com/wp-content/uploads/2021/01/tan-tan-ramen-17.jpg",
+      "rating": 10,
+      "comment": "This one is delicious",
+      "id": 8
+    }
+  ]
 }

@@ -9,19 +9,22 @@ const detailName = document.querySelector('#detail-name');
 const detailRestaurant = document.querySelector('#detail-restaurant');
 
 //Render Ramen
+let currentRamenID;
 
 fetch ('http://localhost:3000/ramens')
     .then(resp => resp.json())
     .then(ramenObject => {
         ramenObject.forEach(ramen => renderRamen(ramen));
         defaultRamen(ramenObject);
+        // currentRamenID  = ramenObject.id;
     })
 
 const renderRamen = (ramen) => {
     const ramenImage = document.createElement('img');
     ramenImage.src = ramen.image;
     ramenMenu.appendChild(ramenImage);
-
+    ramenImage.id = ramen.id;
+    currentRamenID = ramen.id;
 
     ramenImage.addEventListener('click', () => {
         ratingDisplay.innerHTML = ramen.rating;
@@ -29,6 +32,7 @@ const renderRamen = (ramen) => {
         detailImage.src = ramen.image;
         detailName.innerHTML = ramen.name;
         detailRestaurant.innerHTML = ramen.restaurant;
+        currentRamenID = ramen.id;
     })
 
 }
@@ -45,11 +49,7 @@ ramenForm.addEventListener('submit', (e) => {
     const ramenRating = document.querySelector('#new-rating').value;
     const ramenComment = document.querySelector('#new-comment').value;
 
-    document.querySelector('#new-name').value = '';
-    document.querySelector('#new-restaurant').value = '';
-    document.querySelector('#new-image').value = '';
-    document.querySelector('#new-rating').value = '';
-    document.querySelector('#new-comment').value = '';
+    e.target.reset();
 
     fetch('http://localhost:3000/ramens',{
         method: 'POST',
@@ -70,6 +70,36 @@ ramenForm.addEventListener('submit', (e) => {
 
   })
 
+  //Update Rating
+  const updateForm = document.querySelector('#edit-ramen');
+
+  updateForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newRating = e.target.rating.value;
+      const newComment = e.target.comment.value;
+
+      updateForm.reset();
+
+      fetch(`http://localhost:3000/ramens/${currentRamenID}`,{
+          method: 'PATCH',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              rating: parseInt(newRating),
+              comment: newComment
+          })
+      })
+          .then(resp => resp.json())
+          .then(ramen => {
+              ratingDisplay.textContent = ramen.rating
+              commentDisplay.textContent = ramen.comment
+          })
+  })
+
+  
+
 //Default
 
 function defaultRamen(ramenObject) {
@@ -79,28 +109,27 @@ function defaultRamen(ramenObject) {
     detailImage.src = defaultRamen.image;
     detailName.innerHTML = defaultRamen.name;
     detailRestaurant.innerHTML = defaultRamen.restaurant;
+    currentRamenID = defaultRamen.id;
 }
 
-//Update Rating
+//Delete
 
-const updateForm = document.querySelector('#edit-ramen');
 
-updateForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const newRating = document.querySelector('#new-rating');
-    const newComment = document.querySelector('#new-comment');
-    
-    fetch(`http://localhost:3000/ramens/${ramen.id}`,{
-        method: 'PATCH',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "rating": parseInt(newRating.value),
-            "comment": newComment.value
-        })
+const deleteBtn = document.createElement('button');
+deleteBtn.textContent = "Delete";
+const body = document.querySelector('body');
+body.appendChild(deleteBtn);
+
+deleteBtn.addEventListener('click', () => {
+    fetch(`http://localhost:3000/ramens/${currentRamenID}`, {
+        method: 'DELETE'
     })
-        .then(resp => resp.json())
-        .then(ramen => renderRamen(ramen))
+        .then(resp => {
+            if (resp.ok) {
+                document.getElementById(`${currentRamenID}`).remove();
+                fetch ('http://localhost:3000/ramens')
+                    .then(resp => resp.json())
+                    .then(ramenObject => defaultRamen(ramenObject))
+            }
+     })
 })
